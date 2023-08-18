@@ -10,7 +10,8 @@ public class App {
     private static final String JDBC_URL = "jdbc:postgresql://localhost/postgres";
 
     public static void main(String[] args) {
-        new App();
+        System.out.println("Testando o gitPod");
+       // new App();
     }
 
     public App(){
