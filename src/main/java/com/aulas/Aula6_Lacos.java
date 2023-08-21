@@ -29,7 +29,24 @@ public class Aula6_Lacos {
         System.out.println(Arrays.toString(matriz[0]));
         System.out.println(Arrays.toString(matriz[1]));
     
+        System.out.println();
 
-
+        System.out.println("Imprimindo a matriz");
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[i].length; j++) {
+                System.out.print(i+""+j+" ");
+            }
+            System.out.println();
+        }
+        System.out.println();
+        System.out.println("Imprimindo a matriz transposta");
+        
+        System.out.println("método 1");
+        for (int j = 0; j < matriz[0].length; j++) {
+            for (int i = 0; i < matriz.length; i++) {
+                System.out.print(i+""+j+" ");
+            }
+            System.out.println();
+        }
     }
 }

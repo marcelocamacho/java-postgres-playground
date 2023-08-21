@@ -4,7 +4,7 @@ public class Aula3_TiposPrimitivos {
         System.out.println();
 
         //byte idade = 128; // Type mismatch pq o compilador já entende que aqui deveria ser uma variável Int
-        byte idade = 127; // Atribuição possível
+        //byte idade = 127; // Atribuição possível
 
         int peso = 80;
         //byte pesoEmByte = peso; //não é possível a atribuição pq internamente o java atribui um espaço maior para representar um INT, mesmo que o valor esteja dentro do intervalo de um Byte        System.out.println("Idade é "+ idade);
