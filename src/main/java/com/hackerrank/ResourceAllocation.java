@@ -8,6 +8,7 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 /*
 5
 1
@@ -21,7 +22,8 @@ import java.util.List;
 14
 7
 */
-class Result {
+
+class ResultResourceAllocation {
 
     public static int getMinMatchines(List<Integer> start, List<Integer> end) {
     
@@ -31,7 +33,7 @@ class Result {
     }
 }
 
-public class ResourceAllocation {
+class ResourceAllocation {
     public static void main(String[] args) throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
         //BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
@@ -56,7 +58,7 @@ public class ResourceAllocation {
         System.out.println(Arrays.toString(start.toArray()));
         System.out.println(Arrays.toString(end.toArray()));
 
-        int result = Result.getMinMatchines(start,end);
+        int result = ResultResourceAllocation.getMinMatchines(start,end);
 
         bufferedWriter.write("->"+result);
         bufferedWriter.newLine();

@@ -17,7 +17,7 @@ import java.util.List;
 1 2 2 1
 3 3 3 4 
 */
-class Result {
+class ResultPermuteArray {
 
     public static String twoArrays(int k, List<Integer> A, List<Integer> B) {
     Collections.sort(A);
@@ -68,7 +68,7 @@ public class PermuteArray {
                 B.add(BItem);
             }
 
-            String result = Result.twoArrays(k, A, B);
+            String result = ResultPermuteArray.twoArrays(k, A, B);
 
             bufferedWriter.write(result);
             bufferedWriter.newLine();
