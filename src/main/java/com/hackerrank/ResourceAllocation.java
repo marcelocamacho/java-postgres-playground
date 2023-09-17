@@ -83,6 +83,9 @@ class Machine{
         setAllocationStatusOfTaskAdded();
     }
 
+    public List<Task> getTasks(){
+        return this.tasks;
+    }
     public int getId(){
         return this.id;
     }
@@ -97,10 +100,18 @@ class Machine{
 
     public int getTotalTimeAllocated(){
         int totalTime = 0;
-        for(Task t: tasks){
+        for(Task t: this.tasks){
             totalTime += t.getTotalTime();
         }
         return totalTime;
+    }
+
+    public int getStartTimeOfFistTask(){
+        return this.tasks.get(0).getStart();
+    }
+
+    public int getEndTimeOfLastTask(){
+        return this.tasks.get(countMachines).getEnd();
     }
 
     public String toString(){
@@ -116,48 +127,74 @@ class Machine{
 
 class ResultResourceAllocation {
 
+    public static List<Machine> allocationStrategy(List<Machine> cluster, Task task){
+        int idOfMachineWithLessLoad = 0;
+        int idOfNextMachineUnoccupied = 0;
+        Machine server = cluster.get(idOfMachineWithLessLoad);
+        System.out.println(cluster.size());
+        int lessLoad = server.getTotalTimeAllocated();
+        int lessEndTime = server.getEndTimeOfLastTask();
+        int machineID=-99;
+        System.out.println("lessLoad: "+lessLoad);
+        System.out.println("lessEndTime: "+lessEndTime);
+
+        for (Machine machine : cluster) {
+            int startTimeOfFistTask = machine.getStartTimeOfFistTask();
+            int endTimeOfLastTask  = machine.getEndTimeOfLastTask();
+            int loadMachine = machine.getTotalTimeAllocated();machineID = machine.getId();
+
+            if(loadMachine < lessLoad){
+                lessLoad = loadMachine;
+                idOfMachineWithLessLoad = machine.getId();
+            }
+
+            if(lessEndTime < endTimeOfLastTask)  {
+                lessEndTime = endTimeOfLastTask;
+                idOfNextMachineUnoccupied = machine.getId();
+            }
+            
+            if(task.getEnd()< startTimeOfFistTask){
+                machine.addTask(task);
+                machineID = machine.getId();
+                task.setAllocationStatus(true);
+            } else if(task.getStart() > endTimeOfLastTask){
+                machine.addTask(task);
+                task.setAllocationStatus(true);
+                machineID = machine.getId();
+            }
+        }
+
+        if(!task.isAllocated()){
+            System.out.println("Nova máquina criada");
+            cluster.add(new Machine(task));
+            machineID = cluster.get(cluster.size()-1).getId();
+        }
+
+        System.out.println("Task "+task.getId()+"alocada na maquina "+machineID);
+        return cluster;
+    }
+
     public static int getMinMatchines(List<Integer> start, List<Integer> end) {
         
         List<Task> queue = new ArrayList<>();
-        Machine[] cluster = new Machine[10];
-        Arrays.fill(cluster,null);
+        List<Machine> cluster = new ArrayList<>();
 
         for (int i = 0; i < start.size(); i++) {
             queue.add(new Task(start.get(i), end.get(i)));
         }
 
-        Machine server = new Machine(queue.get(0));
-        cluster[0] = server;
-
+        //Machine server = new Machine(queue.get(0));
+        
         for (Task t : queue) {
             System.out.println(t.toString());
-            for (int i=0;i < cluster.length; i++) {
-                System.out.println("Machine "+cluster[i].getId()+" with "+ cluster[i].getTotalTimeAllocated()+" time allocated");
-                if(t.isAllocated()){
-                    System.out.println("Task has be allocated");
-                    break;
-                } else if(!t.isAllocated() && t.getStart() > cluster[i].getTotalTimeAllocated()){
-                    cluster[i].addTask(t);
-                    System.out.println("Add task to existent machine");
-                    break;
-                }else {
-                    cluster[++i]=new Machine(t);
-                    System.out.println("Add task to new machine");
-                    break;
-                }
+
+            if(cluster.isEmpty()){
+                cluster.add(new Machine(t));
+            } else {
+                cluster = allocationStrategy(cluster,t);
             }
         }
-
-
-
-        int result = 0;
-        for (int i=0;i < cluster.length;i++) {
-            if(cluster[i]!=null){
-                System.out.println(cluster[i].toString());
-                result++;
-            }
-        }
-        return result;
+        return cluster.size();
     }
 }
 
