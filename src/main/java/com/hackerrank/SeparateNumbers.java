@@ -27,6 +27,7 @@ class SeparateNumbersResult {
      */
 
     public static void separateNumbers(String s) {
+        int count=0;
         int pivot=0;
         int len=1;
         List<String> beautifull = new ArrayList<>();
@@ -34,7 +35,7 @@ class SeparateNumbersResult {
         int end = next+len;
         String first;
         String second;
-        System.out.println(s);
+        //System.out.println(s);
         if(s.length()<2){
             System.out.println("NO");
         } else if (s.length()==2){
@@ -46,30 +47,27 @@ class SeparateNumbersResult {
                 first = s.substring(pivot, next);
                 second = s.substring(next, end);
 
-                System.out.printf("First: %s -> Second: %s%n", first, second);
+               // System.out.printf("First: %s -> Second: %s%n", first, second);
 
-                
-                if(first.charAt(first.length()-1) == '9'){
-                    end++;
-                    System.out.println("Aumenta o end -> "+end);
+                if(second.charAt(0) == '0' | second.length()>first.length()){
+                    ++len;
+                    //System.out.println("Aumenta o len -> "+len);
+                } else if(first.charAt(first.length()-1) == '9' || first.length()>second.length()){
+                    ++end;
+                    //System.out.println("Aumenta o end -> "+end);
                 }
                 
                 if(Integer.parseInt(second) == Integer.parseInt(first)+1){
                     beautifull.add(first);
-                    ++pivot;
-                    System.out.println("Aumenta o pivot -> "+pivot);
-                    //next=pivot+len; 
-                    end = next+len;  
+                    pivot=next;
+                    //System.out.println("Aumenta o pivot -> "+pivot);
+                    end = end+len;  
                 }
                 
-                if(second.charAt(0) == '0' | second.length()>first.length()){
-                    ++len;
-                    System.out.println("Aumenta o len -> "+len);
-                }
                 next = pivot+len;
-                //end = next+len;
-
-            } while (end<=s.length());    
+                count++;
+                
+            } while (end<s.length() || next<s.length()  || count>200);    
         
             if(Integer.parseInt(second) == Integer.parseInt(first)+1)
                     beautifull.add(second);
